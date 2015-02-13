@@ -9,7 +9,6 @@
   "devDependencies": {
     "gulp": "^3.8.1",
     "gulp-autoprefixer": "*",
-    "gulp-clean": "*",
     "gulp-connect": "*",
     "gulp-cssmin": "*",
     "gulp-imagemin": "*",
@@ -19,6 +18,7 @@
     "gulp-uglify": "*",
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
-    "opn": "*"
+    "opn": "*",
+    "rimraf": "*"
   }
 }

@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     rigger = require('gulp-rigger'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
-    clean = require('gulp-clean'),
+    rimraf = require('rimraf'),
     connect = require('gulp-connect'),
     opn = require('opn');
 
@@ -36,7 +36,7 @@ var path = {
         img: 'src/img/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
-    clean: 'build'
+    clean: './build'
 };
 
 var server = {
@@ -44,9 +44,8 @@ var server = {
     port: '9000'
 };
 
-gulp.task('clean', function () {
-    return gulp.src(path.clean, {read: false})
-        .pipe(clean());
+gulp.task('clean', function (cb) {
+    rimraf(path.clean, cb);
 });
 
 gulp.task('webserver', function() {
