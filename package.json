@@ -4,7 +4,7 @@
   "description": "Devil boilerplate for html+js+css apps",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Insayt/generator-frontend-devil"
+    "url": "https://github.com/Insayt/frontend-devil"
   },
   "devDependencies": {
     "gulp": "^3.8.1",
