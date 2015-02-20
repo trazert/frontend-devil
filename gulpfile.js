@@ -61,35 +61,35 @@ gulp.task('openbrowser', function() {
 });
 
 gulp.task('html:build', function () {
-    gulp.src(path.src.html)
+    gulp.src(path.src.html) 
         .pipe(rigger())
         .pipe(gulp.dest(path.build.html))
         .pipe(connect.reload());
 });
 
 gulp.task('js:build', function () {
-    gulp.src(path.src.js)
-        .pipe(rigger())
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(path.build.js))
-        .pipe(connect.reload());
+    gulp.src(path.src.js) 
+        .pipe(rigger()) 
+        .pipe(sourcemaps.init()) 
+        .pipe(uglify()) 
+        .pipe(sourcemaps.write()) 
+        .pipe(gulp.dest(path.build.js)) 
+        .pipe(connect.reload()); 
 });
 
 gulp.task('style:build', function () {
-    gulp.src(path.src.style)
-        .pipe(sourcemaps.init())
+    gulp.src(path.src.style) 
+        .pipe(sourcemaps.init()) 
         .pipe(sass())
         .pipe(prefixer())
         .pipe(cssmin())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(path.build.css))
+        .pipe(gulp.dest(path.build.css)) 
         .pipe(connect.reload());
 });
 
 gulp.task('image:build', function () {
-    gulp.src(path.src.img)
+    gulp.src(path.src.img) 
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
