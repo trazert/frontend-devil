@@ -4,15 +4,15 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
-    cssmin = require('gulp-cssmin'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     rigger = require('gulp-rigger'),
+    cssmin = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     rimraf = require('rimraf'),
-    connect = require('gulp-connect'),
-    opn = require('opn');
+    browserSync = require("browser-sync"),
+    reload = browserSync.reload;
 
 var path = {
     build: {
@@ -39,57 +39,59 @@ var path = {
     clean: './build'
 };
 
-var server = {
+var config = {
+    server: {
+        baseDir: "./build"
+    },
+    tunnel: true,
     host: 'localhost',
-    port: '9000'
+    port: 9000,
+    logPrefix: "Frontend_Devil"
 };
+
+gulp.task('webserver', function () {
+    browserSync(config);
+});
 
 gulp.task('clean', function (cb) {
     rimraf(path.clean, cb);
 });
 
-gulp.task('webserver', function() {
-    connect.server({
-        host: server.host,
-        port: server.port,
-        livereload: true
-    });
-});
-
-gulp.task('openbrowser', function() {
-    opn( 'http://' + server.host + ':' + server.port + '/build' );
-});
-
 gulp.task('html:build', function () {
-    gulp.src(path.src.html)
+    gulp.src(path.src.html) 
         .pipe(rigger())
         .pipe(gulp.dest(path.build.html))
-        .pipe(connect.reload());
+        .pipe(reload({stream: true}));
 });
 
 gulp.task('js:build', function () {
-    gulp.src(path.src.js)
-        .pipe(rigger())
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(sourcemaps.write())
+    gulp.src(path.src.js) 
+        .pipe(rigger()) 
+        .pipe(sourcemaps.init()) 
+        .pipe(uglify()) 
+        .pipe(sourcemaps.write()) 
         .pipe(gulp.dest(path.build.js))
-        .pipe(connect.reload());
+        .pipe(reload({stream: true}));
 });
 
 gulp.task('style:build', function () {
-    gulp.src(path.src.style)
+    gulp.src(path.src.style) 
         .pipe(sourcemaps.init())
-        .pipe(sass())
+        .pipe(sass({
+            includePaths: ['src/style/'],
+            outputStyle: 'compressed',
+            sourceMap: true,
+            errLogToConsole: true
+        }))
         .pipe(prefixer())
         .pipe(cssmin())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.build.css))
-        .pipe(connect.reload());
+        .pipe(reload({stream: true}));
 });
 
 gulp.task('image:build', function () {
-    gulp.src(path.src.img)
+    gulp.src(path.src.img) 
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -97,7 +99,7 @@ gulp.task('image:build', function () {
             interlaced: true
         }))
         .pipe(gulp.dest(path.build.img))
-        .pipe(connect.reload());
+        .pipe(reload({stream: true}));
 });
 
 gulp.task('fonts:build', function() {
@@ -133,4 +135,4 @@ gulp.task('watch', function(){
 });
 
 
-gulp.task('default', ['build', 'webserver', 'watch', 'openbrowser']);
+gulp.task('default', ['build', 'webserver', 'watch']);
